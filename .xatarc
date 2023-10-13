@@ -1,0 +1,6 @@
+{
+  "databaseURL": "https://Sebastian-s-workspace-u593rk.eu-central-1.xata.sh/db/Giftronic",
+  "codegen": {
+    "output": "src/lib/xata.ts"
+  }
+}

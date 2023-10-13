@@ -14,6 +14,7 @@
     "@trpc/next": "^10.40.0",
     "@trpc/react-query": "^10.40.0",
     "@trpc/server": "^10.40.0",
+    "@xata.io/client": "^0.26.9",
     "next": "13.5.4",
     "react": "^18",
     "react-dom": "^18",
