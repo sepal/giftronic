@@ -1,0 +1,18 @@
+{
+  "id": "mig_ckkjsv2r50killc5aa60",
+  "parentID": "mig_ckkjsmir50killc5aa2g",
+  "checksum": "1:bba91014d430239143780b01f2855730a71dd2a4362a5d0d9bb32938c0699a14",
+  "operations": [
+    {
+      "addColumn": {
+        "column": {
+          "name": "credits",
+          "type": "int",
+          "notNull": true,
+          "defaultValue": "10"
+        },
+        "table": "Users"
+      }
+    }
+  ]
+}

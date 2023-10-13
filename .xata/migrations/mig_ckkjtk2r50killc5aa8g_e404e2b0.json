@@ -1,0 +1,12 @@
+{
+  "id": "mig_ckkjtk2r50killc5aa8g",
+  "parentID": "mig_ckkjthrc7il7nkhsfmsg",
+  "checksum": "1:e404e2b0e053aa4c3f68415f9cabfaa8d16ccf0d58d6619f9aae148068edad6f",
+  "operations": [
+    {
+      "addTable": {
+        "table": "Videos"
+      }
+    }
+  ]
+}

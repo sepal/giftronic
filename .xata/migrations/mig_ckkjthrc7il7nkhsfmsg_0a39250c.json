@@ -1,0 +1,16 @@
+{
+  "id": "mig_ckkjthrc7il7nkhsfmsg",
+  "parentID": "mig_ckkjtdjc7il7nkhsfmrg",
+  "checksum": "1:0a39250c9282edee0b6731b6d5fa7a22ea2da0f6f650e3e3c3e3693c60cfbdf4",
+  "operations": [
+    {
+      "addColumn": {
+        "column": {
+          "name": "clerkId",
+          "type": "string"
+        },
+        "table": "Users"
+      }
+    }
+  ]
+}

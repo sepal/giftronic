@@ -1,0 +1,14 @@
+{
+  "id": "mig_ckkjvfe6jun80m54avs0",
+  "parentID": "mig_ckkjvdqr50killc5aaag",
+  "checksum": "1:0bb5aba4edc70be88b1923ed1fb226878b031971c5251b3d5043538b8f0abb2d",
+  "operations": [
+    {
+      "renameColumn": {
+        "newName": "video",
+        "oldName": "Video",
+        "table": "Videos"
+      }
+    }
+  ]
+}
