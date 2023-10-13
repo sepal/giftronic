@@ -17,8 +17,9 @@ const VideoGeneration = ({ onSubmit }: Props) => {
 
   const handleClick = (e: MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
-    if (!prompt) return;
-    onSubmit(prompt);
+    // We need at least some words to generate a video.
+    if (!prompt || prompt.trim().length <= 3) return;
+    onSubmit(prompt.trim());
   };
 
   return (
