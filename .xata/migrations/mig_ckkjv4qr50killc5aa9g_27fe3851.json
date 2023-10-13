@@ -1,0 +1,18 @@
+{
+  "id": "mig_ckkjv4qr50killc5aa9g",
+  "parentID": "mig_ckkjuqrc7il7nkhsfmtg",
+  "checksum": "1:27fe38518f9664b204693a4275a6f6880cac48e55c74236cfe73d17deb1f5bd4",
+  "operations": [
+    {
+      "addColumn": {
+        "column": {
+          "name": "generationSettings",
+          "type": "json",
+          "notNull": true,
+          "defaultValue": "{}"
+        },
+        "table": "Videos"
+      }
+    }
+  ]
+}

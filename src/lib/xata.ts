@@ -6,12 +6,49 @@ import type {
   XataRecord,
 } from "@xata.io/client";
 
-const tables = [] as const;
+const tables = [
+  {
+    name: "Users",
+    columns: [
+      { name: "credits", type: "int", notNull: true, defaultValue: "0" },
+      { name: "clerkId", type: "string" },
+      { name: "videos", type: "link", link: { table: "Videos" } },
+    ],
+  },
+  {
+    name: "Videos",
+    columns: [
+      {
+        name: "prompt",
+        type: "text",
+        notNull: true,
+        defaultValue: "A cartoon polar bear dancing",
+      },
+      {
+        name: "generationSettings",
+        type: "json",
+        notNull: true,
+        defaultValue: "{}",
+      },
+      { name: "video", type: "file" },
+    ],
+    revLinks: [{ column: "videos", table: "Users" }],
+  },
+] as const;
 
 export type SchemaTables = typeof tables;
 export type InferredTypes = SchemaInference<SchemaTables>;
 
-export type DatabaseSchema = {};
+export type Users = InferredTypes["Users"];
+export type UsersRecord = Users & XataRecord;
+
+export type Videos = InferredTypes["Videos"];
+export type VideosRecord = Videos & XataRecord;
+
+export type DatabaseSchema = {
+  Users: UsersRecord;
+  Videos: VideosRecord;
+};
 
 const DatabaseClient = buildClient();
 

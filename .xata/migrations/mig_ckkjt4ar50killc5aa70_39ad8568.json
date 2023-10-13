@@ -1,0 +1,13 @@
+{
+  "id": "mig_ckkjt4ar50killc5aa70",
+  "parentID": "mig_ckkjsv2r50killc5aa60",
+  "checksum": "1:39ad8568b9e3b26668c3aaebd8c09edbb7b1842ee7d87c5bb8c0e2069164ab18",
+  "operations": [
+    {
+      "removeColumn": {
+        "column": "credits",
+        "table": "Users"
+      }
+    }
+  ]
+}

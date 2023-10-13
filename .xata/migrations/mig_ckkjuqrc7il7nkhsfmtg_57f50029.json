@@ -1,0 +1,18 @@
+{
+  "id": "mig_ckkjuqrc7il7nkhsfmtg",
+  "parentID": "mig_ckkjtk2r50killc5aa8g",
+  "checksum": "1:57f50029619056232a0df8db7847e651a82822beb37f4b301008628f5303b9bc",
+  "operations": [
+    {
+      "addColumn": {
+        "column": {
+          "name": "prompt",
+          "type": "text",
+          "notNull": true,
+          "defaultValue": "A cartoon polar bear dancing"
+        },
+        "table": "Videos"
+      }
+    }
+  ]
+}
