@@ -47,8 +47,6 @@ export async function requestVideoGeneration(
     webhook_events_filter: ["completed"],
   });
 
-  console.log(prediction);
-
   return videoRecord;
 }
 

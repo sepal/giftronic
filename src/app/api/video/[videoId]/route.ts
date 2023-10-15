@@ -23,7 +23,6 @@ export async function GET(req: Request, { params }: Params) {
 
   try {
     const video = await getVideo(videoId);
-    console.log(video);
     if (!video) {
       return NextResponse.json(
         {
