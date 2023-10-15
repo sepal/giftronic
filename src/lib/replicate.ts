@@ -2,7 +2,7 @@ import Replicate from "replicate";
 
 let replicate: Replicate | null = null;
 
-export function getReplicate() {
+export function getReplicateClient() {
   if (replicate) return replicate;
 
   replicate = new Replicate({
