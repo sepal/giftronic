@@ -1,4 +1,5 @@
 import { getReplicateClient } from "@/lib/replicate";
+import { getBaseUrl } from "@/lib/url";
 import { getXataClient } from "@/lib/xata";
 
 export enum Scheduler {
@@ -24,7 +25,7 @@ const defaultOptions: VideoGenerationOptions = {
 
 export async function requestVideoGeneration(
   prompt: string,
-  options: VideoGenerationOptions
+  options?: VideoGenerationOptions
 ) {
   const replicate = getReplicateClient();
   const xata = getXataClient();
@@ -39,9 +40,10 @@ export async function requestVideoGeneration(
   const prediction = await replicate.predictions.create({
     version: "b57dddff6ae2029be57eab3d17e0de5f1c83b822f0defd8ce49bee44d7b52ee6",
     input: {
-      prompt: "a camel smoking a cigarette, hd, high quality",
+      prompt: prompt,
+      ...generationSettings,
     },
-    webhook: "https://example.com/your-webhook",
+    webhook: getBaseUrl() + `/api/video/${videoRecord.id}/generation`,
     webhook_events_filter: ["completed"],
   });
 
@@ -70,5 +72,5 @@ export async function addVideo(id: string, videoBlob: Blob) {
 
 export async function getVideo(id: string) {
   const xata = getXataClient();
-  return xata.db.Videos.readOrThrow(id);
+  return xata.db.Videos.read(id);
 }
