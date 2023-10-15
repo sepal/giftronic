@@ -1,4 +1,4 @@
-import { MemeEditor } from "@/components/MemEditor";
+import { MemeEditor } from "@/components/MemeEditor";
 import { getVideo } from "@/server/data/video";
 
 export default async function Edit({
@@ -14,7 +14,7 @@ export default async function Edit({
   }
 
   return (
-    <main className="flex min-h-screen flex-col items-center justify-between p-24">
+    <main className="flex min-h-screen flex-col items-center justify-between p-4">
       <MemeEditor video={video} />
     </main>
   );
