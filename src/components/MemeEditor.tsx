@@ -1,5 +1,7 @@
+"use client";
+
 import { Videos } from "@/lib/xata";
-import { Input } from "./ui/input";
+import { MemeTextInput } from "./ui/memeTextInput";
 
 interface Props {
   video: Videos;
@@ -17,9 +19,13 @@ const MemeEditor = ({ video }: Props) => {
         />
       </div>
       <div className="relative z-10 h-full grid grid-rows-3 grid-flow-col gap-4 items-center ">
-        <div className="text-4xl text-center text-white shadow">Top text</div>
+        <div className="">
+          <MemeTextInput onChange={(text) => console.log(text)} />
+        </div>
         <div></div>
-        <div className="text-4xl text-center">Bottom text</div>
+        <div>
+          <MemeTextInput onChange={(text) => console.log(text)} />
+        </div>
       </div>
     </div>
   );
