@@ -2,10 +2,9 @@
 
 import { Videos } from "@/lib/xata";
 import { MemeTextInput } from "./ui/memeTextInput";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useFFMPEG } from "@/lib/hooks/useFFMPEG";
 import { Button } from "./ui/button";
-import { getBaseUrl } from "@/lib/url";
 
 interface Props {
   video: Videos;
@@ -16,7 +15,9 @@ const MemeEditor = ({ video }: Props) => {
   const [bottomText, setBottomText] = useState<string | null>(null);
   const [gif, setGif] = useState<string | null>(null);
 
-  const [transcode] = useFFMPEG(`/api/video/${video.id}/file`);
+  const { transcode, texts, setTexts } = useFFMPEG(
+    `/api/video/${video.id}/file`
+  );
 
   const handleSave = async () => {
     const gifFile = await transcode();
@@ -24,6 +25,13 @@ const MemeEditor = ({ video }: Props) => {
     console.log(url);
     setGif(url);
   };
+
+  useEffect(() => {
+    setTexts([
+      { text: "", x: 0, y: 46 },
+      { text: "", x: 0, y: 312 },
+    ]);
+  }, []);
 
   return (
     <div className="relative w-[672px] h-[384px] mx-auto">
@@ -37,11 +45,23 @@ const MemeEditor = ({ video }: Props) => {
       </div>
       <div className="relative z-10 h-full grid grid-rows-3 grid-flow-col gap-4 items-center ">
         <div className="">
-          <MemeTextInput onChange={(text) => setTopText} />
+          <MemeTextInput
+            onChange={(text) => {
+              const newTexts = texts;
+              newTexts[0].text = text;
+              setTexts(newTexts);
+            }}
+          />
         </div>
         <div></div>
         <div>
-          <MemeTextInput onChange={(text) => setBottomText} />
+          <MemeTextInput
+            onChange={(text) => {
+              const newTexts = texts;
+              newTexts[1].text = text;
+              setTexts(newTexts);
+            }}
+          />
         </div>
       </div>
       <Button
