@@ -11,6 +11,8 @@
   },
   "dependencies": {
     "@clerk/nextjs": "^4.25.4",
+    "@ffmpeg/ffmpeg": "^0.12.7",
+    "@ffmpeg/util": "^0.12.1",
     "@heroicons/react": "^2.0.18",
     "@radix-ui/react-slot": "^1.0.2",
     "@tanstack/react-query": "^4.36.1",
@@ -32,6 +34,7 @@
     "zod": "^3.22.4"
   },
   "devDependencies": {
+    "@ffmpeg/types": "^0.12.2",
     "@testing-library/react": "^14.0.0",
     "@types/node": "^20",
     "@types/react": "^18",
