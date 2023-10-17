@@ -1,6 +1,6 @@
 "use client";
 
-import { Videos } from "@/lib/xata";
+import { Memes, Videos } from "@/lib/xata";
 import { MemeTextInput } from "./ui/memeTextInput";
 import { useEffect, useState } from "react";
 import { useFFMPEG } from "@/lib/hooks/useFFMPEG";
@@ -24,6 +24,32 @@ const MemeEditor = ({ video }: Props) => {
     const url = URL.createObjectURL(new Blob([gifFile], { type: "image/gif" }));
     console.log(url);
     setGif(url);
+
+    const cResp = await fetch("/api/meme", {
+      method: "POST",
+      body: JSON.stringify({
+        videoId: video.id,
+        texts: texts,
+      }),
+    });
+
+    if (cResp.status != 200) {
+      console.error(await cResp.text());
+      return;
+    }
+    let meme = (await cResp.json()) as Memes;
+
+    const formData = new FormData();
+
+    const blob = new Blob([gifFile], {
+      type: "image/gif",
+    });
+
+    formData.set("file", blob);
+    const uResp = fetch(`/api/meme/${meme.id}/file`, {
+      method: "POST",
+      body: formData,
+    });
   };
 
   useEffect(() => {
