@@ -1,0 +1,13 @@
+{
+  "id": "mig_ckn26qmljrdiahcbmd00",
+  "parentID": "mig_ckm4iorc7il7nkhsmtvg",
+  "checksum": "1:b797d9829cc9b26bf2949b33de30afcea2f7e55dd8263d8e3289d1b45d0eaf9a",
+  "operations": [
+    {
+      "removeColumn": {
+        "column": "topText",
+        "table": "Memes"
+      }
+    }
+  ]
+}

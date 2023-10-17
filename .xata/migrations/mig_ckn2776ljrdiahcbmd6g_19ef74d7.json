@@ -1,0 +1,14 @@
+{
+  "id": "mig_ckn2776ljrdiahcbmd6g",
+  "parentID": "mig_ckn275eljrdiahcbmd20",
+  "checksum": "1:19ef74d78f6054e54d62b8f9981e3d1c3c30c21294687977588f3f181be7799f",
+  "operations": [
+    {
+      "renameColumn": {
+        "newName": "texts",
+        "oldName": "texsts",
+        "table": "Memes"
+      }
+    }
+  ]
+}
