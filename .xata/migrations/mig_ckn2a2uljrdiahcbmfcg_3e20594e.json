@@ -1,0 +1,14 @@
+{
+  "id": "mig_ckn2a2uljrdiahcbmfcg",
+  "parentID": "mig_ckn2a1mljrdiahcbmfbg",
+  "checksum": "1:3e20594e9893c32926d4692087cd09d9195d60abc7cbcdc6562c5c56e317a754",
+  "operations": [
+    {
+      "renameColumn": {
+        "newName": "videoText",
+        "oldName": "textPos",
+        "table": "Memes"
+      }
+    }
+  ]
+}

@@ -42,8 +42,9 @@ const tables = [
     name: "Memes",
     columns: [
       { name: "video", type: "link", link: { table: "Videos" } },
-      { name: "texts", type: "text" },
-      { name: "textPos", type: "json" },
+      { name: "text", type: "text" },
+      { name: "videoText", type: "json" },
+      { name: "file", type: "file" },
     ],
     revLinks: [{ column: "memes", table: "Users" }],
   },
