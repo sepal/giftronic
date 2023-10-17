@@ -1,0 +1,19 @@
+{
+  "id": "mig_ckm4hb66jun80m54g790",
+  "parentID": "mig_ckm4h03c7il7nkhsmtsg",
+  "checksum": "1:22640a681f7f0c3bef385c144ed9f9191a897bee0b5782fc654d1c176e48ca78",
+  "operations": [
+    {
+      "addColumn": {
+        "column": {
+          "name": "video",
+          "type": "link",
+          "link": {
+            "table": "Videos"
+          }
+        },
+        "table": "Memes"
+      }
+    }
+  ]
+}

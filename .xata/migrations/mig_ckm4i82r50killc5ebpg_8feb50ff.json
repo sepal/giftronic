@@ -1,0 +1,16 @@
+{
+  "id": "mig_ckm4i82r50killc5ebpg",
+  "parentID": "mig_ckm4hje6jun80m54g7b0",
+  "checksum": "1:8feb50fff74ff0cc2aa7d688958a8ab28fad706dbecfbac961c42df5f6cbba65",
+  "operations": [
+    {
+      "addColumn": {
+        "column": {
+          "name": "text",
+          "type": "string"
+        },
+        "table": "Memes"
+      }
+    }
+  ]
+}

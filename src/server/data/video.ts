@@ -71,7 +71,7 @@ export async function addVideo(id: string, videoBlob: Blob) {
 export async function getVideo(id: string) {
   const xata = getXataClient();
   return xata.db.Videos.read(id, [
-    "prompt",
+    "*",
     "video.name",
     "video.mediaType",
     "video.signedUrl",

@@ -9,7 +9,12 @@ export default authMiddleware({
     "/generate",
     "/api/video",
     "/api/video/(rec_[\\w\\d]+)",
+    "/api/video/(rec_[\\w\\d]+)/file",
     "/api/video/(rec_[\\w\\d]+)/generation",
+    "/api/meme",
+    "/api/meme/(rec_[\\w\\d]+)",
+    "/api/meme/(rec_[\\w\\d]+)/file",
+    "/(rec_[\\w\\d]+)/edit",
   ],
 });
 

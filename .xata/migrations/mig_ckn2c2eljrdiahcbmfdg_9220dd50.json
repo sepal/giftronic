@@ -1,0 +1,16 @@
+{
+  "id": "mig_ckn2c2eljrdiahcbmfdg",
+  "parentID": "mig_ckn2a2uljrdiahcbmfcg",
+  "checksum": "1:9220dd50aebe4ce8b5f72f5ad5d335835b9f1b533e242c70537ed8c6593f6347",
+  "operations": [
+    {
+      "addColumn": {
+        "column": {
+          "name": "file",
+          "type": "file"
+        },
+        "table": "Memes"
+      }
+    }
+  ]
+}
