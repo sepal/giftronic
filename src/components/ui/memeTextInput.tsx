@@ -5,12 +5,17 @@ import ContentEditable, { ContentEditableEvent } from "react-contenteditable";
 interface Props {
   onChange: (text: string) => void;
   defaultText?: string;
+  placeholder?: string;
 }
 
 const divStart = new RegExp(/<div>/gi);
 const divEnd = new RegExp(/<\/div>/gi);
 
-const MemeTextInput = ({ onChange, defaultText = "" }: Props) => {
+const MemeTextInput = ({
+  onChange,
+  defaultText = "",
+  placeholder = "",
+}: Props) => {
   const text = useRef(defaultText);
 
   const handleChange = (event: ContentEditableEvent) => {
@@ -25,7 +30,8 @@ const MemeTextInput = ({ onChange, defaultText = "" }: Props) => {
     <ContentEditable
       html={text.current}
       onChange={handleChange}
-      className="bg-black bg-opacity-20 outline-none text-white text-center text-4xl"
+      placeholder={placeholder}
+      className="bg-black bg-opacity-20 outline-none text-white text-center md:text-4xl"
     />
   );
 };
