@@ -70,5 +70,5 @@ export async function GET(req: NextRequest, { params }: Params) {
       }
     );
   }
-  return meme.toSerializable();
+  return NextResponse.json(meme);
 }

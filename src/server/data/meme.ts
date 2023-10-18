@@ -69,6 +69,13 @@ export async function updateMeme(
 
 export async function getMeme(id: string) {
   const xata = getXataClient();
-  const meme = await xata.db.Memes.read(id, ["*", "file.*", "file.signedUrl"]);
+  const meme = await xata.db.Memes.read(id, [
+    "*",
+    "file.*",
+    "file.signedUrl",
+    "video.*",
+    "video.video.*",
+    "video.video.signedUrl",
+  ]);
   return meme;
 }

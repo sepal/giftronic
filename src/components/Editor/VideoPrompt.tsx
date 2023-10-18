@@ -15,7 +15,11 @@ const VideoPrompt = ({ onPromptChange }: Prop) => {
         className=""
         type="text"
         placeholder="A dancing cartoon polar bear dancing..."
-        onChange={(e) => onPromptChange(e.target.value)}
+        onChange={(e) => {
+          e.preventDefault();
+
+          onPromptChange(e.target.value);
+        }}
       />
     </div>
   );
