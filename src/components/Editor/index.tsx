@@ -10,8 +10,10 @@ import {
   createMeme,
   createVideo,
   getMeme,
+  updateMeme,
   videoAvailable,
 } from "@/lib/clients";
+import { useFFMPEG } from "@/lib/hooks/useFFMPEG";
 
 enum State {
   EMPTY_VIDEO,
@@ -23,6 +25,7 @@ const Editor = () => {
   const [prompt, setPrompt] = useState<string>("");
   const [state, setState] = useState<State>(State.EMPTY_VIDEO);
   const [meme, setMeme] = useState<Memes | null>(null);
+  const { loadFile, transcode, texts, setTexts } = useFFMPEG();
 
   const videoFilePoll = async (meme: Memes) => {
     if (!meme?.video?.id) return;
@@ -55,6 +58,25 @@ const Editor = () => {
     videoFilePoll(meme);
   };
 
+  const generateGif = async () => {
+    if (!meme || !meme.video?.id) return;
+    await loadFile(`/api/video/${meme.video.id}/file`);
+    const gifFile = await transcode();
+    const url = URL.createObjectURL(new Blob([gifFile], { type: "image/gif" }));
+    const blob = new Blob([gifFile], {
+      type: "image/gif",
+    });
+
+    const newMeme = await updateMeme(meme?.id, {
+      gif: blob,
+      texts: texts,
+    });
+
+    if (!newMeme) return;
+
+    setMeme(newMeme);
+  };
+
   const getChildEditor = () => {
     switch (state) {
       case State.EDIT_TEXT:
@@ -64,13 +86,25 @@ const Editor = () => {
               <div className="absolute">
                 <video src={meme?.video?.video?.signedUrl} loop autoPlay />
               </div>
-              <TextEditor />
+              <TextEditor onTextChange={(text) => setTexts(text)} />
             </div>
             <div className="flex flex-row justify-around gap-2">
-              <Button variant="secondary" onClick={(e) => {}}>
+              <Button
+                variant="secondary"
+                onClick={(e) => {
+                  e.preventDefault();
+                }}
+              >
                 Retry generating video
               </Button>
-              <Button onClick={(e) => {}}>Create Meme</Button>
+              <Button
+                onClick={(e) => {
+                  e.preventDefault();
+                  generateGif();
+                }}
+              >
+                Create Meme
+              </Button>
             </div>
           </>
         );
@@ -78,7 +112,7 @@ const Editor = () => {
         return (
           <div className="relative w-[300px] h-[160px] md:w-[672px] md:h-[384px]">
             <VideoSkeleton className="absolute" />
-            <TextEditor />
+            <TextEditor onTextChange={(text) => setTexts(text)} />
           </div>
         );
       default:

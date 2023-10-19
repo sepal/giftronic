@@ -1,3 +1,4 @@
+import { updateMeme } from "@/lib/clients";
 import { getXataClient } from "@/lib/xata";
 import { getVideo } from "@/server/data/video";
 import { NextResponse } from "next/server";

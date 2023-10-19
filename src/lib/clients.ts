@@ -55,6 +55,17 @@ export async function createMeme(data?: MemeInput) {
 }
 
 export async function updateMeme(memeId: string, data: MemeInput) {
+  if (data.gif) {
+    const formData = new FormData();
+    formData.set("file", data.gif as File);
+    const resp = await fetch(`/api/meme/${memeId}/file`, {
+      method: "POST",
+      body: formData,
+    });
+
+    delete data.gif;
+  }
+
   const resp = await fetch(`/api/meme/${memeId}`, {
     method: "PUT",
     body: JSON.stringify(data),
