@@ -6,9 +6,10 @@ import { useRef } from "react";
 
 interface Props {
   onTextChange: (texts: VideoText[]) => void;
+  defaultText?: VideoText[];
 }
 
-const TextEditor = ({ onTextChange }: Props) => {
+const TextEditor = ({ onTextChange, defaultText = [] }: Props) => {
   const topText = useRef<string>("");
   const bottomText = useRef<string>("");
   const handleTextChange = () => {
@@ -24,7 +25,7 @@ const TextEditor = ({ onTextChange }: Props) => {
     <div className="relative w-full z-10 h-full grid grid-rows-3 grid-flow-col gap-4 items-center ">
       <div className="">
         <MemeTextInput
-          defaultText="Top text"
+          defaultText={defaultText[0]?.text || "Top text"}
           onChange={(text) => {
             topText.current = text;
             handleTextChange();
@@ -34,7 +35,7 @@ const TextEditor = ({ onTextChange }: Props) => {
       <div></div>
       <div>
         <MemeTextInput
-          defaultText="bottom text"
+          defaultText={defaultText[1]?.text || "Top text"}
           onChange={(text) => {
             bottomText.current = text;
             handleTextChange();

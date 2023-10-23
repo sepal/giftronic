@@ -17,9 +17,9 @@ function getTextArgs(texts: VideoText[]) {
   return textArgs.join(",");
 }
 
-export function useFFMPEG() {
+export function useFFMPEG(defaultTexts: VideoText[] = []) {
   const ffmpegRef = useRef(new FFmpeg());
-  const [texts, setTexts] = useState<VideoText[]>([]);
+  const [texts, setTexts] = useState<VideoText[]>(defaultTexts);
 
   const load = async () => {
     const baseURL = "https://unpkg.com/@ffmpeg/core@0.12.4/dist/umd";

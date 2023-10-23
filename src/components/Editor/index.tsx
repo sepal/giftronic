@@ -21,11 +21,21 @@ enum State {
   EDIT_TEXT,
 }
 
-const Editor = () => {
+interface Props {
+  defaultMeme?: Memes;
+}
+
+const Editor = ({ defaultMeme = undefined }: Props) => {
   const [prompt, setPrompt] = useState<string>("");
-  const [state, setState] = useState<State>(State.EMPTY_VIDEO);
-  const [meme, setMeme] = useState<Memes | null>(null);
-  const { loadFile, transcode, texts, setTexts } = useFFMPEG();
+  const [state, setState] = useState<State>(
+    defaultMeme ? State.EDIT_TEXT : State.EMPTY_VIDEO
+  );
+  const [meme, setMeme] = useState<Memes | undefined>(defaultMeme);
+  const { loadFile, transcode, texts, setTexts } = useFFMPEG(
+    defaultMeme?.videoText || []
+  );
+
+  console.log(meme?.video?.video?.signedUrl);
 
   const videoFilePoll = async (meme: Memes) => {
     if (!meme?.video?.id) return;
@@ -86,7 +96,10 @@ const Editor = () => {
               <div className="absolute">
                 <video src={meme?.video?.video?.signedUrl} loop autoPlay />
               </div>
-              <TextEditor onTextChange={(text) => setTexts(text)} />
+              <TextEditor
+                onTextChange={(text) => setTexts(text)}
+                defaultText={meme?.videoText}
+              />
             </div>
             <div className="flex flex-row justify-around gap-2">
               <Button

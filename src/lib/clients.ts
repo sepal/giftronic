@@ -1,5 +1,6 @@
 import { MemeInput } from "@/server/data/meme";
 import { Memes, Videos } from "./xata";
+import { getBaseUrl } from "./url";
 
 export async function createVideo(prompt: string) {
   const resp = await fetch("/api/video", {
@@ -81,7 +82,11 @@ export async function updateMeme(memeId: string, data: MemeInput) {
 }
 
 export async function getMeme(memeId: string) {
-  const resp = await fetch(`/api/meme/${memeId}`);
+  const baseUrl = getBaseUrl();
+  const resp = await fetch(`${baseUrl}/api/meme/${memeId}`, {
+    // Look into not having to opt out of caching, because if the signedUrl.
+    next: { revalidate: 0 },
+  });
   if (resp.status != 200) {
     console.error(await resp.text());
     return;
