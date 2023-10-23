@@ -17,7 +17,6 @@ const TextEditor = ({ onTextChange, defaultText = [] }: Props) => {
       { text: topText.current, x: 0, y: 46 },
       { text: bottomText.current, x: 0, y: 312 },
     ];
-    console.log(texts.map((item) => item.text).join("\n"));
     onTextChange(texts);
   };
 

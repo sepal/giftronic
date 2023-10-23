@@ -31,7 +31,6 @@ export async function videoAvailable(videoId: string) {
   }
 
   const videoRecord = (await resp.json()) as Videos;
-  console.log(videoRecord);
 
   if (!videoRecord.video?.signedUrl) {
     return false;

@@ -1,5 +1,4 @@
-import { Editor } from "@/components/Editor";
-import { EditorSkeleton } from "@/components/Editor/Skeleton";
+import { Editor, EditorSkeleton } from "@/components/Editor";
 import { getMeme } from "@/lib/clients";
 import { notFound } from "next/navigation";
 import { Suspense } from "react";
