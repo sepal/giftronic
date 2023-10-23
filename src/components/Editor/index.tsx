@@ -26,7 +26,10 @@ interface Props {
 }
 
 const Editor = ({ defaultMeme = undefined }: Props) => {
-  const [prompt, setPrompt] = useState<string>("");
+  console.log(defaultMeme);
+  const [prompt, setPrompt] = useState<string>(
+    defaultMeme?.video?.prompt || ""
+  );
   const [state, setState] = useState<State>(
     defaultMeme ? State.EDIT_TEXT : State.EMPTY_VIDEO
   );
@@ -58,14 +61,21 @@ const Editor = ({ defaultMeme = undefined }: Props) => {
     console.log("Generate video");
     setState(State.GENERATE_VIDEO);
     const video = await createVideo(prompt);
-    const meme = await createMeme({ videoId: video?.id });
-    console.log(meme);
-    if (!video?.id || !meme?.id) {
+    let newMeme: Memes | undefined;
+    if (!meme) {
+      newMeme = await createMeme({ videoId: video?.id });
+      console.log(meme);
+    } else {
+      newMeme = await updateMeme(meme.id, {
+        videoId: video?.id,
+      });
+    }
+    if (!video?.id || !newMeme?.id) {
       console.error("Error creating meme or video");
       return;
     }
-    setMeme(meme);
-    videoFilePoll(meme);
+    setMeme(newMeme);
+    videoFilePoll(newMeme);
   };
 
   const generateGif = async () => {
@@ -106,6 +116,7 @@ const Editor = ({ defaultMeme = undefined }: Props) => {
                 variant="secondary"
                 onClick={(e) => {
                   e.preventDefault();
+                  generateVideo();
                 }}
               >
                 Retry generating video

@@ -1,3 +1,4 @@
+import { randomInt } from "@/lib/math";
 import { getReplicateClient } from "@/lib/replicate";
 import { getBaseUrl } from "@/lib/url";
 import { getXataClient } from "@/lib/xata";
@@ -30,7 +31,7 @@ export async function requestVideoGeneration(
   const replicate = getReplicateClient();
   const xata = getXataClient();
 
-  const generationSettings = { ...defaultOptions, options };
+  const generationSettings = { ...defaultOptions, seed: randomInt(), options };
 
   const videoRecord = await xata.db.Videos.create({
     prompt,
