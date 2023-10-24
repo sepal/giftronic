@@ -19,19 +19,25 @@ enum State {
   EMPTY_VIDEO,
   GENERATE_VIDEO,
   EDIT_TEXT,
+  PREVIEW,
 }
 
 interface Props {
   defaultMeme?: Memes;
 }
 
+function getDefaultState(meme?: Memes) {
+  if (meme?.file?.signedUrl) return State.PREVIEW;
+  if (meme?.video?.video?.signedUrl) return State.EDIT_TEXT;
+  return State.EMPTY_VIDEO;
+}
+
 const Editor = ({ defaultMeme = undefined }: Props) => {
   const [prompt, setPrompt] = useState<string>(
     defaultMeme?.video?.prompt || ""
   );
-  const [state, setState] = useState<State>(
-    defaultMeme ? State.EDIT_TEXT : State.EMPTY_VIDEO
-  );
+
+  const [state, setState] = useState<State>(getDefaultState(defaultMeme));
   const [meme, setMeme] = useState<Memes | undefined>(defaultMeme);
   const { loadFile, transcode, texts, setTexts } = useFFMPEG(
     defaultMeme?.videoText || []
@@ -94,6 +100,33 @@ const Editor = ({ defaultMeme = undefined }: Props) => {
 
   const getChildEditor = () => {
     switch (state) {
+      case State.PREVIEW:
+        return (
+          <>
+            <div className="relative w-[300px] h-[160px] md:w-[672px] md:h-[384px]">
+              <img src={meme?.file?.url} />
+            </div>
+            <div className="flex flex-row justify-around gap-2">
+              <Button
+                variant="secondary"
+                onClick={(e) => {
+                  e.preventDefault();
+                  generateVideo();
+                }}
+              >
+                Retry generating video
+              </Button>
+              <Button
+                onClick={(e) => {
+                  e.preventDefault();
+                  setState(State.EDIT_TEXT);
+                }}
+              >
+                Edit Meme
+              </Button>
+            </div>
+          </>
+        );
       case State.EDIT_TEXT:
         return (
           <>
@@ -117,12 +150,13 @@ const Editor = ({ defaultMeme = undefined }: Props) => {
                 Retry generating video
               </Button>
               <Button
-                onClick={(e) => {
+                onClick={async (e) => {
                   e.preventDefault();
-                  generateGif();
+                  await generateGif();
+                  setState(State.PREVIEW);
                 }}
               >
-                Create Meme
+                Save Meme
               </Button>
             </div>
           </>

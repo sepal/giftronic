@@ -1,0 +1,63 @@
+{
+  "id": "mig_cknb1tuljrdiahcbnofg",
+  "parentID": "mig_ckkjvt2r50killc5aabg",
+  "checksum": "1:86c0ff20b70ac62e6e88d6fa5b88ffdb8b73b716b019c1cefed4fa6373b8db53",
+  "operations": [
+    {
+      "addTable": {
+        "table": "Memes"
+      }
+    },
+    {
+      "addColumn": {
+        "column": {
+          "name": "memes",
+          "type": "link",
+          "link": {
+            "table": "Memes"
+          }
+        },
+        "table": "Users"
+      }
+    },
+    {
+      "addColumn": {
+        "column": {
+          "name": "video",
+          "type": "link",
+          "link": {
+            "table": "Videos"
+          }
+        },
+        "table": "Memes"
+      }
+    },
+    {
+      "addColumn": {
+        "column": {
+          "name": "text",
+          "type": "text"
+        },
+        "table": "Memes"
+      }
+    },
+    {
+      "addColumn": {
+        "column": {
+          "name": "videoText",
+          "type": "json"
+        },
+        "table": "Memes"
+      }
+    },
+    {
+      "addColumn": {
+        "column": {
+          "name": "file",
+          "type": "file"
+        },
+        "table": "Memes"
+      }
+    }
+  ]
+}
