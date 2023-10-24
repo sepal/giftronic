@@ -168,7 +168,7 @@ const Editor = ({ defaultMeme = undefined }: Props) => {
       );
       break;
     case State.PREVIEW:
-      preview = <img src={meme?.file?.url} />;
+      preview = <img src={meme?.file?.url} alt={meme?.text || ""} />;
       actions = (
         <>
           <Link href={"/"} className={buttonVariants({ variant: "secondary" })}>

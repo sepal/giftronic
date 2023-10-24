@@ -29,10 +29,13 @@ export default async function Home({
       },
     });
 
-  const skeletons = Array.from({ length: 12 }, () => <MemeSkeleton />);
+  const skeletons = Array.from({ length: 12 }, (_, i) => (
+    <MemeSkeleton key={i} />
+  ));
 
   const memeChilds = memes.records.map((meme) => (
     <MemePreview
+      key={meme.id}
       src={meme.file!.url}
       text={meme.text || ""}
       url={`/meme/${meme.id}`}
