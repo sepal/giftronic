@@ -1,5 +1,3 @@
-import { UserButton } from "@clerk/nextjs";
-import { serverClient } from "./_trpc/serverClient";
 import { getXataClient } from "@/lib/xata";
 import {
   MemeCTA,
@@ -8,7 +6,7 @@ import {
   MemeSkeleton,
 } from "@/components/ui/Memes";
 import { Suspense } from "react";
-import { Header } from "@/components/layoutes/Header";
+import { Header } from "@/components/layouts/Header";
 
 const MEMES_PER_PAGE_COUNT = 12;
 
@@ -40,7 +38,7 @@ export default async function Home({
   return (
     <>
       <Header />
-      <main className="min-h-screen justify-between p-4 bg-slate-800 text-white">
+      <main className="justify-between p-4 dark:bg-slate-800 dark:text-white">
         <h1 className="text-2xl py-4">Latest memes:</h1>
         <MemeGrid>
           <Suspense fallback={skeletons}>{memeChilds}</Suspense>
