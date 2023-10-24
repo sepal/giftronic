@@ -1,4 +1,6 @@
 import { MemeInput, getMeme, updateMeme } from "@/server/data/meme";
+import { canEditMeme } from "@/server/data/user";
+import { auth } from "@clerk/nextjs";
 import { NextRequest, NextResponse } from "next/server";
 
 type Params = {
@@ -9,6 +11,12 @@ type Params = {
 
 export async function PUT(req: NextRequest, { params }: Params) {
   const { memeId } = params;
+
+  const { userId } = auth();
+
+  if (!userId) {
+    return NextResponse.json({ error: "Not authorized" }, { status: 401 });
+  }
 
   if (!memeId) {
     return NextResponse.json(
@@ -23,8 +31,12 @@ export async function PUT(req: NextRequest, { params }: Params) {
 
   const body = (await req.json()) as MemeInput;
 
+  if (!canEditMeme(userId, memeId)) {
+    return NextResponse.json({ error: "No access" }, { status: 403 });
+  }
+
   try {
-    const meme = await updateMeme(memeId, body);
+    const meme = await updateMeme(userId, memeId, body);
     if (!meme) {
       return NextResponse.json(
         {
