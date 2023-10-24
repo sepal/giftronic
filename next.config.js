@@ -1,4 +1,8 @@
 /** @type {import('next').NextConfig} */
-const nextConfig = {}
+const nextConfig = {
+  images: {
+    domains: ["eu-central-1.storage.xata.sh"],
+  },
+};
 
-module.exports = nextConfig
+module.exports = nextConfig;

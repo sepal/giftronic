@@ -1,8 +1,7 @@
-import { Editor, EditorSkeleton } from "@/components/Editor";
 import { Header } from "@/components/layouts/Header";
+import { Meme } from "@/components/ui/Memes";
 import { getMeme } from "@/lib/clients";
 import { notFound } from "next/navigation";
-import { Suspense } from "react";
 
 export default async function EditMeme({
   params,
@@ -12,7 +11,7 @@ export default async function EditMeme({
   const { memeId } = params;
   const meme = await getMeme(memeId);
 
-  if (!meme) {
+  if (!meme?.file?.url || !meme?.text) {
     notFound();
   }
 
@@ -20,9 +19,7 @@ export default async function EditMeme({
     <>
       <Header />
       <main className="flex min-h-screen flex-col items-center justify-between p-4 dark:bg-slate-800 dark:text-white">
-        <Suspense fallback={<EditorSkeleton />}>
-          <Editor defaultMeme={meme} />
-        </Suspense>
+        <Meme src={meme.file.url} text={meme.text} />
       </main>
     </>
   );
