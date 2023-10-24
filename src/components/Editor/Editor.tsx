@@ -3,7 +3,7 @@
 import { Memes, Videos } from "@/lib/xata";
 import { useState } from "react";
 import { VideoPrompt } from "./VideoPrompt";
-import { Button } from "../ui/button";
+import { Button, buttonVariants } from "../ui/button";
 import { VideoSkeleton } from "./VideoSkeleton";
 import { TextEditor } from "./TextEditor";
 import {
@@ -15,6 +15,7 @@ import {
 } from "@/lib/clients";
 import { useFFMPEG } from "@/lib/hooks/useFFMPEG";
 import { ActionWrapper, VideoPreview } from "./Elements";
+import Link from "next/link";
 
 enum State {
   EMPTY_VIDEO,
@@ -100,15 +101,20 @@ const Editor = ({ defaultMeme = undefined }: Props) => {
   };
 
   let actions = (
-    <Button
-      className="max-w-xl m-auto"
-      onClick={(e) => {
-        e.preventDefault();
-        generateVideo();
-      }}
-    >
-      Generate Video
-    </Button>
+    <>
+      <Link href={"/"} className={buttonVariants({ variant: "secondary" })}>
+        Back to the front
+      </Link>
+      <Button
+        className="max-w-xl m-auto"
+        onClick={(e) => {
+          e.preventDefault();
+          generateVideo();
+        }}
+      >
+        Generate Video
+      </Button>
+    </>
   );
 
   let preview = (
@@ -164,14 +170,19 @@ const Editor = ({ defaultMeme = undefined }: Props) => {
     case State.PREVIEW:
       preview = <img src={meme?.file?.url} />;
       actions = (
-        <Button
-          onClick={(e) => {
-            e.preventDefault();
-            setState(State.EDIT_TEXT);
-          }}
-        >
-          Edit Meme
-        </Button>
+        <>
+          <Link href={"/"} className={buttonVariants({ variant: "secondary" })}>
+            Back to the front
+          </Link>
+          <Button
+            onClick={(e) => {
+              e.preventDefault();
+              setState(State.EDIT_TEXT);
+            }}
+          >
+            Edit Meme
+          </Button>
+        </>
       );
       break;
   }
