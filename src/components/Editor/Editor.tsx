@@ -109,6 +109,8 @@ const Editor = ({ defaultMeme = undefined }: Props) => {
         className="max-w-xl m-auto"
         onClick={(e) => {
           e.preventDefault();
+          const text = prompt.trim();
+          if (text.length <= 3) return;
           generateVideo();
         }}
       >
@@ -117,12 +119,7 @@ const Editor = ({ defaultMeme = undefined }: Props) => {
     </>
   );
 
-  let preview = (
-    <>
-      <VideoSkeleton className="absolute" />
-      <TextEditor onTextChange={(text) => setTexts(text)} />
-    </>
-  );
+  let preview = <VideoPrompt onPromptChange={(prompt) => setPrompt(prompt)} />;
 
   switch (state) {
     case State.GENERATE_VIDEO:
