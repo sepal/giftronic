@@ -34,23 +34,30 @@ interface MemePreviewProps {
 }
 
 const MemePreview = ({ text, src, url }: MemePreviewProps) => (
-  <Link href={url} className="hover:shadow-lg">
-    <Image src={src} width={MAX_WIDTH} height={MAX_HEIGHT} alt={text} />
+  <Link href={url} className="">
+    <Image
+      className="border-2 rounded-lg hover:shadow-lg"
+      src={src}
+      width={MAX_WIDTH}
+      height={MAX_HEIGHT}
+      alt={text}
+    />
   </Link>
 );
 
 const MemeCTA = () => (
-  <div
+  <Link
+    href={"/generate"}
     className={cn(
       `w-[${MAX_WIDTH}px]`,
       `h-[${MAX_HEIGHT}px]`,
-      "rounded-none bg-muted text-black flex justify-center items-center p-2 hover:shadow-lg"
+      "bg-muted text-black flex justify-center items-center p-2 hover:shadow-lg rounded-md border-2"
     )}
   >
-    <Link className={buttonVariants({ variant: "default" })} href={"/generate"}>
+    <span className={buttonVariants({ variant: "default" })}>
       Create your own
-    </Link>
-  </div>
+    </span>
+  </Link>
 );
 
 interface MemeProps {
