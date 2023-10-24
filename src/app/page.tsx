@@ -8,6 +8,7 @@ import {
   MemeSkeleton,
 } from "@/components/ui/Memes";
 import { Suspense } from "react";
+import { Header } from "@/components/layoutes/Header";
 
 const MEMES_PER_PAGE_COUNT = 12;
 
@@ -37,12 +38,15 @@ export default async function Home({
   ));
 
   return (
-    <main className="min-h-screen justify-between p-24 bg-slate-800 text-white">
-      <h1 className="text-2xl py-4">Latest memes:</h1>
-      <MemeGrid>
-        <Suspense fallback={skeletons}>{memeChilds}</Suspense>
-        <MemeCTA />
-      </MemeGrid>
-    </main>
+    <>
+      <Header />
+      <main className="min-h-screen justify-between p-4 bg-slate-800 text-white">
+        <h1 className="text-2xl py-4">Latest memes:</h1>
+        <MemeGrid>
+          <Suspense fallback={skeletons}>{memeChilds}</Suspense>
+          <MemeCTA />
+        </MemeGrid>
+      </main>
+    </>
   );
 }
