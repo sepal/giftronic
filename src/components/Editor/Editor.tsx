@@ -108,15 +108,6 @@ const Editor = ({ defaultMeme = undefined }: Props) => {
             </div>
             <div className="flex flex-row justify-around gap-2">
               <Button
-                variant="secondary"
-                onClick={(e) => {
-                  e.preventDefault();
-                  generateVideo();
-                }}
-              >
-                Retry generating video
-              </Button>
-              <Button
                 onClick={(e) => {
                   e.preventDefault();
                   setState(State.EDIT_TEXT);
