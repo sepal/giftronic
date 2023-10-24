@@ -17,9 +17,9 @@ function getTextArgs(texts: VideoText[]) {
   return textArgs.join(",");
 }
 
-export function useFFMPEG(videoUrl: string) {
+export function useFFMPEG(defaultTexts: VideoText[] = []) {
   const ffmpegRef = useRef(new FFmpeg());
-  const [texts, setTexts] = useState<VideoText[]>([]);
+  const [texts, setTexts] = useState<VideoText[]>(defaultTexts);
 
   const load = async () => {
     const baseURL = "https://unpkg.com/@ffmpeg/core@0.12.4/dist/umd";
@@ -39,19 +39,17 @@ export function useFFMPEG(videoUrl: string) {
     console.log("FFmpeg should be loaded");
   };
 
-  // const loadFile = async () => {
-  //   const ffmpeg = ffmpegRef.current;
-  //   console.log("Load file", videoUrl);
-  //   const inputFile = await fetchFile(videoUrl);
-  //   await ffmpeg.writeFile("input.mp4", inputFile);
-  //   console.log("File written to ffmpeg");
-  // };
+  const loadFile = async (videoUrl: string) => {
+    const ffmpeg = ffmpegRef.current;
+    console.log("Load file", videoUrl);
+    const inputFile = await fetchFile(videoUrl);
+    await ffmpeg.writeFile("input.mp4", inputFile);
+    console.log("File written to ffmpeg");
+  };
 
   const transcode = async () => {
     const ffmpeg = ffmpegRef.current;
-    const inputFile = await fetchFile(videoUrl);
-    await ffmpeg.writeFile("input.mp4", inputFile);
-    console.log("transcoding", videoUrl);
+    console.log("transcoding");
     let args = ["-i", "input.mp4"];
 
     if (texts.length > 0) {
@@ -77,5 +75,5 @@ export function useFFMPEG(videoUrl: string) {
     load();
   }, []);
 
-  return { transcode, texts, setTexts };
+  return { loadFile, transcode, texts, setTexts };
 }

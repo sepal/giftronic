@@ -7,6 +7,8 @@ export default authMiddleware({
   publicRoutes: [
     "/",
     "/generate",
+    "/meme/(rec_[\\w\\d]+)",
+    "/meme/(rec_[\\w\\d]+)/edit",
     "/api/video",
     "/api/video/(rec_[\\w\\d]+)",
     "/api/video/(rec_[\\w\\d]+)/file",

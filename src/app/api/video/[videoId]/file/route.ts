@@ -1,3 +1,4 @@
+import { updateMeme } from "@/lib/clients";
 import { getXataClient } from "@/lib/xata";
 import { getVideo } from "@/server/data/video";
 import { NextResponse } from "next/server";
@@ -9,7 +10,6 @@ type Params = {
 };
 
 export async function GET(req: Request, { params }: Params) {
-  console.log("Try to return file");
   const { videoId } = params;
 
   if (!videoId) {
@@ -25,7 +25,6 @@ export async function GET(req: Request, { params }: Params) {
 
   try {
     const xata = getXataClient();
-    console.log("Fetch video");
     const video = await getVideo(videoId);
 
     if (!video || !video?.video?.signedUrl) {

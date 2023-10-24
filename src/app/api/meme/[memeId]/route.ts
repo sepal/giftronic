@@ -35,7 +35,7 @@ export async function PUT(req: NextRequest, { params }: Params) {
         }
       );
     }
-    return meme.toSerializable();
+    return NextResponse.json(meme);
   } catch (error) {
     console.error(error);
     return new Response("Server error", {
@@ -70,5 +70,5 @@ export async function GET(req: NextRequest, { params }: Params) {
       }
     );
   }
-  return meme.toSerializable();
+  return NextResponse.json(meme);
 }
