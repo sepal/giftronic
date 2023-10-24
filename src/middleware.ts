@@ -1,4 +1,6 @@
-import { authMiddleware } from "@clerk/nextjs";
+import { authMiddleware, redirectToSignIn } from "@clerk/nextjs";
+import { canEditMeme } from "./server/data/user";
+import { notFound } from "next/navigation";
 
 // This example protects all routes including api/trpc routes
 // Please edit this to allow other routes to be public as needed.

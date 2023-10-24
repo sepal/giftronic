@@ -8,8 +8,6 @@ import { Skeleton } from "../ui/skeleton";
 const Header = () => {
   const { userId } = auth();
 
-  console.log(userId);
-
   return (
     <header className="p-2 bg-gray-100">
       <div className="flex justify-between items-center h-8">

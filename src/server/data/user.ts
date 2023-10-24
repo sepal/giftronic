@@ -20,3 +20,11 @@ export async function deleteUser(userId: string) {
 
   return user;
 }
+
+export async function canEditMeme(userId: string, memeId: string) {
+  const xata = getXataClient();
+
+  const meme = await xata.db.Memes.read(memeId);
+  if (!meme || !meme.createdBy) return false;
+  return meme.createdBy.id == userId;
+}
