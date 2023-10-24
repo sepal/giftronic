@@ -1,6 +1,7 @@
 import { Webhook } from "svix";
 import { headers } from "next/headers";
 import { WebhookEvent } from "@clerk/nextjs/server";
+import { createUser, deleteUser } from "@/server/data/user";
 
 export async function POST(req: Request) {
   // You can find this in the Clerk Dashboard -> Webhooks -> choose the webhook
@@ -55,10 +56,13 @@ export async function POST(req: Request) {
   console.log(`Webhook with and ID of ${id} and type of ${eventType}`);
   console.log("Webhook body:", body);
 
+  if (!id) return new Response("Missing user id", { status: 400 });
   switch (eventType) {
     case "user.created":
+      createUser(id);
       break;
     case "user.deleted":
+      deleteUser(id);
       break;
   }
 
