@@ -14,6 +14,7 @@ import {
   videoAvailable,
 } from "@/lib/clients";
 import { useFFMPEG } from "@/lib/hooks/useFFMPEG";
+import { ActionWrapper, VideoPreview } from "./Elements";
 
 enum State {
   EMPTY_VIDEO,
@@ -98,88 +99,91 @@ const Editor = ({ defaultMeme = undefined }: Props) => {
     setMeme(newMeme);
   };
 
-  const getChildEditor = () => {
-    switch (state) {
-      case State.PREVIEW:
-        return (
-          <>
-            <div className="relative w-[300px] h-[160px] md:w-[672px] md:h-[384px]">
-              <img src={meme?.file?.url} />
-            </div>
-            <div className="flex flex-row justify-around gap-2">
-              <Button
-                onClick={(e) => {
-                  e.preventDefault();
-                  setState(State.EDIT_TEXT);
-                }}
-              >
-                Edit Meme
-              </Button>
-            </div>
-          </>
-        );
-      case State.EDIT_TEXT:
-        return (
-          <>
-            <div className="relative w-[300px] h-[160px] md:w-[672px] md:h-[384px]">
-              <div className="absolute">
-                <video src={meme?.video?.video?.signedUrl} loop autoPlay />
-              </div>
-              <TextEditor
-                onTextChange={(text) => setTexts(text)}
-                defaultText={meme?.videoText}
-              />
-            </div>
-            <div className="flex flex-row justify-around gap-2">
-              <Button
-                variant="secondary"
-                onClick={(e) => {
-                  e.preventDefault();
-                  generateVideo();
-                }}
-              >
-                Retry generating video
-              </Button>
-              <Button
-                onClick={async (e) => {
-                  e.preventDefault();
-                  await generateGif();
-                  setState(State.PREVIEW);
-                }}
-              >
-                Save Meme
-              </Button>
-            </div>
-          </>
-        );
-      case State.GENERATE_VIDEO:
-        return (
-          <div className="relative w-[300px] h-[160px] md:w-[672px] md:h-[384px]">
-            <VideoSkeleton className="absolute" />
-            <TextEditor onTextChange={(text) => setTexts(text)} />
-          </div>
-        );
-      default:
-        return (
-          <>
-            <div className="w-[300px] h-[160px] md:w-[672px] md:h-[384px]">
-              <VideoPrompt onPromptChange={(prompt) => setPrompt(prompt)} />
-            </div>
-            <Button
-              className="max-w-xl m-auto"
-              onClick={(e) => {
-                e.preventDefault();
-                generateVideo();
-              }}
-            >
-              Generate Video
-            </Button>
-          </>
-        );
-    }
-  };
+  let actions = (
+    <Button
+      className="max-w-xl m-auto"
+      onClick={(e) => {
+        e.preventDefault();
+        generateVideo();
+      }}
+    >
+      Generate Video
+    </Button>
+  );
 
-  return <div className="flex flex-col gap-4 mx-auto">{getChildEditor()}</div>;
+  let preview = (
+    <>
+      <VideoSkeleton className="absolute" />
+      <TextEditor onTextChange={(text) => setTexts(text)} />
+    </>
+  );
+
+  switch (state) {
+    case State.GENERATE_VIDEO:
+      preview = (
+        <>
+          <VideoSkeleton className="absolute" />
+          <TextEditor onTextChange={(text) => setTexts(text)} />
+        </>
+      );
+      actions = <></>;
+      break;
+    case State.EDIT_TEXT:
+      preview = (
+        <>
+          <VideoPreview src={meme?.video?.video?.signedUrl} />
+          <TextEditor
+            onTextChange={(text) => setTexts(text)}
+            defaultText={meme?.videoText}
+          />
+        </>
+      );
+      actions = (
+        <>
+          <Button
+            variant="secondary"
+            onClick={(e) => {
+              e.preventDefault();
+              generateVideo();
+            }}
+          >
+            Retry generating video
+          </Button>
+          <Button
+            onClick={async (e) => {
+              e.preventDefault();
+              await generateGif();
+              setState(State.PREVIEW);
+            }}
+          >
+            Save Meme
+          </Button>
+        </>
+      );
+      break;
+    case State.PREVIEW:
+      preview = <img src={meme?.file?.url} />;
+      actions = (
+        <Button
+          onClick={(e) => {
+            e.preventDefault();
+            setState(State.EDIT_TEXT);
+          }}
+        >
+          Edit Meme
+        </Button>
+      );
+      break;
+  }
+
+  return (
+    <div className="flex flex-col gap-4 mx-auto">
+      <div className="relative w-[300px] h-[160px] md:w-[672px] md:h-[384px]">
+        {preview}
+      </div>
+      <ActionWrapper>{actions}</ActionWrapper>
+    </div>
+  );
 };
 
 export { Editor };
