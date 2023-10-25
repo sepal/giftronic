@@ -1,7 +1,7 @@
 "use client";
 
 import { Memes, Videos } from "@/lib/xata";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { VideoPrompt } from "./VideoPrompt";
 import { Button, buttonVariants } from "../ui/button";
 import { VideoSkeleton } from "./VideoSkeleton";
@@ -25,6 +25,7 @@ enum State {
 }
 
 interface Props {
+  defaultCredits?: number;
   defaultMeme?: Memes;
 }
 
@@ -33,7 +34,7 @@ function getDefaultState(meme?: Memes) {
   return State.EMPTY_VIDEO;
 }
 
-const Editor = ({ defaultMeme = undefined }: Props) => {
+const Editor = ({ defaultCredits, defaultMeme = undefined }: Props) => {
   const [prompt, setPrompt] = useState<string>(
     defaultMeme?.video?.prompt || ""
   );
@@ -43,7 +44,23 @@ const Editor = ({ defaultMeme = undefined }: Props) => {
   const { loadFile, transcode, texts, setTexts } = useFFMPEG(
     defaultMeme?.videoText || []
   );
+  const [credits, setCredits] = useState<number | undefined>(defaultCredits);
   const router = useRouter();
+
+  const getCredits = async () => {
+    const resp = await fetch("/api/user");
+    if (resp.status >= 300) {
+      console.log("Logged out");
+      setCredits(0);
+    } else {
+      const user = await resp.json();
+      setCredits(user.credits);
+    }
+  };
+
+  useEffect(() => {
+    getCredits();
+  }, [meme, state]);
 
   const videoFilePoll = async (meme: Memes) => {
     if (!meme?.video?.id) return;
@@ -105,17 +122,25 @@ const Editor = ({ defaultMeme = undefined }: Props) => {
       <Link href={"/"} className={buttonVariants({ variant: "secondary" })}>
         Back to the front
       </Link>
-      <Button
-        className="max-w-xl m-auto"
-        onClick={(e) => {
-          e.preventDefault();
-          const text = prompt.trim();
-          if (text.length <= 3) return;
-          generateVideo();
-        }}
-      >
-        Generate Video
-      </Button>
+      {credits && credits > 0 ? (
+        <Button
+          onClick={(e) => {
+            e.preventDefault();
+            const text = prompt.trim();
+            if (text.length <= 3) return;
+            generateVideo();
+          }}
+        >
+          Generate Video
+        </Button>
+      ) : (
+        <Link
+          href={"/buy-credits"}
+          className={buttonVariants({ variant: "default" })}
+        >
+          Request more credits
+        </Link>
+      )}
     </>
   );
 
@@ -168,6 +193,7 @@ const Editor = ({ defaultMeme = undefined }: Props) => {
 
   return (
     <div className="flex flex-col gap-4 mx-auto">
+      <p>Credits left: {credits || "0"}</p>
       <div className="relative w-[300px] h-[160px] md:w-[672px] md:h-[384px]">
         {preview}
       </div>

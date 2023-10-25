@@ -1,0 +1,19 @@
+{
+  "id": "mig_cksd3583aq2somqqg6dg",
+  "parentID": "mig_cksd32g3aq2somqqg6cg",
+  "checksum": "1:3fd5f806f6cf60a33625f208c6aee64df529485f8452d26fafcb2c5f1ae78bc0",
+  "operations": [
+    {
+      "addColumn": {
+        "column": {
+          "name": "author",
+          "type": "link",
+          "link": {
+            "table": "Users"
+          }
+        },
+        "table": "Videos"
+      }
+    }
+  ]
+}

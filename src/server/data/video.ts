@@ -2,6 +2,7 @@ import { randomInt } from "@/lib/math";
 import { getReplicateClient } from "@/lib/replicate";
 import { getBaseUrl } from "@/lib/url";
 import { getXataClient } from "@/lib/xata";
+import { UserOutOfCreditsError, canGenerateVideo, deductCredits } from "./user";
 
 export enum Scheduler {
   EulerAncestralDiscreteScheduler = "EulerAncestralDiscreteScheduler",
@@ -25,16 +26,24 @@ const defaultOptions: VideoGenerationOptions = {
 };
 
 export async function requestVideoGeneration(
+  userId: string,
   prompt: string,
   options?: VideoGenerationOptions
 ) {
   const replicate = getReplicateClient();
   const xata = getXataClient();
 
+  const canGenerate = await canGenerateVideo(userId);
+
+  if (!canGenerate) {
+    throw new UserOutOfCreditsError(userId);
+  }
+
   const generationSettings = { ...defaultOptions, seed: randomInt(), options };
 
   const videoRecord = await xata.db.Videos.create({
     prompt,
+    author: userId,
     generationSettings,
   });
 
@@ -65,6 +74,10 @@ export async function addVideo(id: string, videoBlob: Blob) {
       mediaType: videoBlob.type,
     },
   });
+
+  if (record?.author) {
+    await deductCredits(record.author.id, 1);
+  }
 
   return record;
 }
