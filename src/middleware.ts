@@ -8,6 +8,7 @@ import { notFound } from "next/navigation";
 export default authMiddleware({
   publicRoutes: [
     "/",
+    "/buy-credits",
     "/generate",
     "/meme/(rec_[\\w\\d]+)",
     "/meme/(rec_[\\w\\d]+)/edit",
