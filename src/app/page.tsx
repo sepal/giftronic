@@ -21,7 +21,7 @@ export default async function Home({
   const memes = await xata.db.Memes.filter({
     $exists: "file",
   })
-    .sort("xata.updatedAt")
+    .sort("xata.updatedAt", "desc")
     .getPaginated({
       pagination: {
         size: MEMES_PER_PAGE_COUNT,
