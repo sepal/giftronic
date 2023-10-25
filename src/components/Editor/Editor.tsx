@@ -16,12 +16,12 @@ import {
 import { useFFMPEG } from "@/lib/hooks/useFFMPEG";
 import { ActionWrapper, VideoPreview } from "./Elements";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 enum State {
   EMPTY_VIDEO,
   GENERATE_VIDEO,
   EDIT_TEXT,
-  PREVIEW,
 }
 
 interface Props {
@@ -29,7 +29,6 @@ interface Props {
 }
 
 function getDefaultState(meme?: Memes) {
-  if (meme?.file?.signedUrl) return State.PREVIEW;
   if (meme?.video?.video?.signedUrl) return State.EDIT_TEXT;
   return State.EMPTY_VIDEO;
 }
@@ -44,6 +43,7 @@ const Editor = ({ defaultMeme = undefined }: Props) => {
   const { loadFile, transcode, texts, setTexts } = useFFMPEG(
     defaultMeme?.videoText || []
   );
+  const router = useRouter();
 
   const videoFilePoll = async (meme: Memes) => {
     if (!meme?.video?.id) return;
@@ -156,28 +156,10 @@ const Editor = ({ defaultMeme = undefined }: Props) => {
             onClick={async (e) => {
               e.preventDefault();
               await generateGif();
-              setState(State.PREVIEW);
+              router.push(`/meme/${meme?.id}`);
             }}
           >
             Save Meme
-          </Button>
-        </>
-      );
-      break;
-    case State.PREVIEW:
-      preview = <img src={meme?.file?.url} alt={meme?.text || ""} />;
-      actions = (
-        <>
-          <Link href={"/"} className={buttonVariants({ variant: "secondary" })}>
-            Back to the front
-          </Link>
-          <Button
-            onClick={(e) => {
-              e.preventDefault();
-              setState(State.EDIT_TEXT);
-            }}
-          >
-            Edit Meme
           </Button>
         </>
       );
