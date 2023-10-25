@@ -29,6 +29,7 @@
     "react-contenteditable": "^3.3.7",
     "react-dom": "^18",
     "replicate": "^0.20.1",
+    "svix": "^1.13.0",
     "tailwind-merge": "^1.14.0",
     "tailwindcss-animate": "^1.0.7",
     "zod": "^3.22.4"

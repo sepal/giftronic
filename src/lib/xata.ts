@@ -12,9 +12,8 @@ const tables = [
     columns: [
       { name: "credits", type: "int", notNull: true, defaultValue: "0" },
       { name: "clerkId", type: "string" },
-      { name: "videos", type: "link", link: { table: "Videos" } },
-      { name: "memes", type: "link", link: { table: "Memes" } },
     ],
+    revLinks: [{ column: "createdBy", table: "Memes" }],
   },
   {
     name: "Videos",
@@ -33,10 +32,7 @@ const tables = [
       },
       { name: "video", type: "file" },
     ],
-    revLinks: [
-      { column: "videos", table: "Users" },
-      { column: "video", table: "Memes" },
-    ],
+    revLinks: [{ column: "video", table: "Memes" }],
   },
   {
     name: "Memes",
@@ -45,8 +41,8 @@ const tables = [
       { name: "text", type: "text" },
       { name: "videoText", type: "json" },
       { name: "file", type: "file" },
+      { name: "createdBy", type: "link", link: { table: "Users" } },
     ],
-    revLinks: [{ column: "memes", table: "Users" }],
   },
 ] as const;
 

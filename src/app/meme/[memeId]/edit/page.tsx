@@ -1,7 +1,10 @@
 import { Editor, EditorSkeleton } from "@/components/Editor";
 import { Header } from "@/components/layouts/Header";
 import { getMeme } from "@/lib/clients";
-import { notFound } from "next/navigation";
+import { getBaseUrl } from "@/lib/url";
+import { canEditMeme } from "@/server/data/user";
+import { RedirectToSignIn, auth, redirectToSignIn } from "@clerk/nextjs";
+import { notFound, redirect } from "next/navigation";
 import { Suspense } from "react";
 
 export default async function EditMeme({
@@ -10,6 +13,19 @@ export default async function EditMeme({
   params: { memeId: string };
 }) {
   const { memeId } = params;
+  const { userId } = auth();
+
+  if (!userId) {
+    return (
+      <RedirectToSignIn redirectUrl={`${getBaseUrl()}/meme/${memeId}/edit`} />
+    );
+  }
+  const canEdit = await canEditMeme(userId!, memeId);
+
+  if (!canEdit) {
+    redirect("/");
+  }
+
   const meme = await getMeme(memeId);
 
   if (!meme) {

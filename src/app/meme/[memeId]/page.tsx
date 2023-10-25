@@ -19,7 +19,7 @@ export default async function EditMeme({
     <>
       <Header />
       <main className="flex min-h-screen flex-col items-center justify-between p-4 dark:bg-slate-800 dark:text-white">
-        <Meme src={meme.file.url} text={meme.text} />
+        <Meme memeId={meme.id} src={meme.file.url} text={meme.text} />
       </main>
     </>
   );

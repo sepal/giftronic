@@ -1,6 +1,7 @@
 import { VideoText } from "@/lib/hooks/useFFMPEG";
 import { Memes, MemesRecord, getXataClient } from "@/lib/xata";
 import { EditableData } from "@xata.io/client";
+import { canEditMeme } from "./user";
 
 export type MemeInput = {
   videoId?: string;
@@ -8,14 +9,24 @@ export type MemeInput = {
   gif?: Blob;
 };
 
-export async function createMeme(input?: MemeInput) {
+class MemeEditPermissionError extends Error {
+  constructor(userId: string, memeId: string) {
+    super(`User ${userId} can't edit ${memeId}`);
+  }
+}
+
+export async function createMeme(userId: string, input?: MemeInput) {
   const xata = getXataClient();
 
   const { videoId, texts, gif } = input ?? {};
 
   let args: Omit<EditableData<MemesRecord>, "id"> = {
-    video: videoId!,
+    createdBy: userId,
   };
+
+  if (videoId) {
+    args["video"] = videoId;
+  }
 
   if (texts && texts.length > 1) {
     args["videoText"] = texts;
@@ -39,12 +50,18 @@ export async function createMeme(input?: MemeInput) {
 }
 
 export async function updateMeme(
+  userId: string,
   id: string,
   { videoId, texts, gif }: MemeInput
 ) {
   const xata = getXataClient();
+
+  if (!(await canEditMeme(userId, id))) {
+    throw new MemeEditPermissionError(userId, id);
+  }
+
   let args: Partial<EditableData<MemesRecord>> = {
-    video: videoId!,
+    video: videoId,
   };
 
   if (texts && texts.length > 1) {

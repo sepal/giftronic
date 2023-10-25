@@ -1,4 +1,6 @@
 import { updateMeme } from "@/server/data/meme";
+import { canEditMeme } from "@/server/data/user";
+import { auth } from "@clerk/nextjs";
 import { NextRequest, NextResponse } from "next/server";
 
 type Params = {
@@ -10,6 +12,12 @@ type Params = {
 export async function POST(req: NextRequest, { params }: Params) {
   const { memeId } = params;
 
+  const { userId } = auth();
+
+  if (!userId) {
+    return NextResponse.json({ error: "Not authorized" }, { status: 401 });
+  }
+
   if (!memeId) {
     return NextResponse.json(
       {
@@ -19,6 +27,10 @@ export async function POST(req: NextRequest, { params }: Params) {
         status: 404,
       }
     );
+  }
+
+  if (!canEditMeme(userId, memeId)) {
+    return NextResponse.json({ error: "No access" }, { status: 403 });
   }
 
   const data = await req.formData();
@@ -34,7 +46,7 @@ export async function POST(req: NextRequest, { params }: Params) {
     );
   const blob = file as Blob;
 
-  const meme = await updateMeme(memeId, {
+  const meme = await updateMeme(userId, memeId, {
     gif: blob,
   });
 

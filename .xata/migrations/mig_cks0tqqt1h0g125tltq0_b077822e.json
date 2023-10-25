@@ -1,0 +1,13 @@
+{
+  "id": "mig_cks0tqqt1h0g125tltq0",
+  "parentID": "mig_ckrqu3p2eumsbpm64pqg",
+  "checksum": "1:b077822e8ede67a4f66fe42f9240bc0911617c6ffc3dce1f8cc359f4fc83def1",
+  "operations": [
+    {
+      "removeColumn": {
+        "column": "videos",
+        "table": "Users"
+      }
+    }
+  ]
+}

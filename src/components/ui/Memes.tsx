@@ -5,6 +5,8 @@ import { cn } from "@/lib/utils";
 import { Button, buttonVariants } from "./button";
 import Link from "next/link";
 import { ActionWrapper } from "../Editor/Elements";
+import { auth } from "@clerk/nextjs";
+import { canEditMeme } from "@/server/data/user";
 
 const MAX_WIDTH = 400;
 const MAX_HEIGHT = Math.round(MAX_WIDTH / 1.72);
@@ -61,19 +63,32 @@ const MemeCTA = () => (
 );
 
 interface MemeProps {
+  memeId: string;
   text: string;
   src: string;
 }
 
-const Meme = ({ text, src }: MemeProps) => (
-  <div className="flex flex-col gap-4">
-    <Image src={src} width={"672"} height={"384"} alt={text} />
-    <ActionWrapper>
-      <Link href={"/"} className={buttonVariants({ variant: "secondary" })}>
-        Back to the front
-      </Link>
-    </ActionWrapper>
-  </div>
-);
+const Meme = async ({ memeId, text, src }: MemeProps) => {
+  const { userId } = auth();
+  const canEdit = userId && (await canEditMeme(userId, memeId));
+  return (
+    <div className="flex flex-col gap-4">
+      <Image src={src} width={"672"} height={"384"} alt={text} />
+      <ActionWrapper>
+        <Link href={"/"} className={buttonVariants({ variant: "secondary" })}>
+          Back to the front
+        </Link>
+        {canEdit && (
+          <Link
+            href={`/meme/${memeId}/edit`}
+            className={buttonVariants({ variant: "default" })}
+          >
+            Edit meme
+          </Link>
+        )}
+      </ActionWrapper>
+    </div>
+  );
+};
 
 export { MemeGrid, MemeSkeleton, MemePreview, MemeCTA, Meme };

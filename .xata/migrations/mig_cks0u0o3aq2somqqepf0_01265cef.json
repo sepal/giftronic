@@ -1,0 +1,19 @@
+{
+  "id": "mig_cks0u0o3aq2somqqepf0",
+  "parentID": "mig_cks0trit1h0g125tltr0",
+  "checksum": "1:01265cef1440e64c18f2b1e173b806b72c96ba6084123588199a96cb97c59d30",
+  "operations": [
+    {
+      "addColumn": {
+        "column": {
+          "name": "createdBy",
+          "type": "link",
+          "link": {
+            "table": "Users"
+          }
+        },
+        "table": "Memes"
+      }
+    }
+  ]
+}
