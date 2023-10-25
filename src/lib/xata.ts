@@ -13,7 +13,10 @@ const tables = [
       { name: "credits", type: "int", notNull: true, defaultValue: "0" },
       { name: "clerkId", type: "string" },
     ],
-    revLinks: [{ column: "createdBy", table: "Memes" }],
+    revLinks: [
+      { column: "createdBy", table: "Memes" },
+      { column: "author", table: "Videos" },
+    ],
   },
   {
     name: "Videos",
@@ -31,6 +34,7 @@ const tables = [
         defaultValue: "{}",
       },
       { name: "video", type: "file" },
+      { name: "author", type: "link", link: { table: "Users" } },
     ],
     revLinks: [{ column: "video", table: "Memes" }],
   },
