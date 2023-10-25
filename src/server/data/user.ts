@@ -36,7 +36,7 @@ export async function deductCredits(userId: string, toDeduct = 1) {
   }
 
   const updated = await user.update({
-    credits: toDeduct,
+    credits: newCredits,
   });
 
   if (!updated) {
@@ -44,6 +44,12 @@ export async function deductCredits(userId: string, toDeduct = 1) {
   }
 
   return updated.credits;
+}
+
+export async function getUser(userId: string) {
+  const xata = getXataClient();
+  const user = await xata.db.Users.read(userId);
+  return user;
 }
 
 export async function deleteUser(userId: string) {
