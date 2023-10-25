@@ -2,7 +2,7 @@ import { Editor, EditorSkeleton } from "@/components/Editor";
 import { Header } from "@/components/layouts/Header";
 import { getMeme } from "@/lib/clients";
 import { getBaseUrl } from "@/lib/url";
-import { canEditMeme } from "@/server/data/user";
+import { canEditMeme, getUser } from "@/server/data/user";
 import { RedirectToSignIn, auth, redirectToSignIn } from "@clerk/nextjs";
 import { notFound, redirect } from "next/navigation";
 import { Suspense } from "react";
@@ -27,6 +27,7 @@ export default async function EditMeme({
   }
 
   const meme = await getMeme(memeId);
+  const user = await getUser(userId);
 
   if (!meme) {
     notFound();
@@ -37,7 +38,7 @@ export default async function EditMeme({
       <Header />
       <main className="flex min-h-screen flex-col items-center justify-between p-4 dark:bg-slate-800 dark:text-white">
         <Suspense fallback={<EditorSkeleton />}>
-          <Editor defaultMeme={meme} />
+          <Editor defaultCredits={user?.credits} defaultMeme={meme} />
         </Suspense>
       </main>
     </>
