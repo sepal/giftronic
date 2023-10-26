@@ -59,10 +59,10 @@ export async function POST(req: Request) {
   if (!id) return new Response("Missing user id", { status: 400 });
   switch (eventType) {
     case "user.created":
-      createUser(id);
+      await createUser(id);
       break;
     case "user.deleted":
-      deleteUser(id);
+      await deleteUser(id);
       break;
   }
 
