@@ -4,11 +4,12 @@ import { AnalyticsBrowser } from "@june-so/analytics-next";
 export function useJune() {
   const [analytics, setAnalytics] = useState<AnalyticsBrowser | undefined>();
   const JUNE_KEY = process.env.NEXT_PUBLIC_JUNE_KEY;
-  if (!JUNE_KEY) {
-    return;
-  }
 
   useEffect(() => {
+    if (!JUNE_KEY) {
+      return;
+    }
+
     const loadAnalytics = async () => {
       let response = AnalyticsBrowser.load({
         writeKey: JUNE_KEY,
