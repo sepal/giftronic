@@ -17,6 +17,7 @@ import { useFFMPEG } from "@/lib/hooks/useFFMPEG";
 import { ActionWrapper, VideoPreview } from "./Elements";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { useJune } from "@/lib/hooks/useJune";
 
 enum State {
   EMPTY_VIDEO,
@@ -46,6 +47,7 @@ const Editor = ({ defaultCredits, defaultMeme = undefined }: Props) => {
   );
   const [credits, setCredits] = useState<number | undefined>(defaultCredits);
   const router = useRouter();
+  const analytics = useJune();
 
   const getCredits = async () => {
     const resp = await fetch("/api/user");
@@ -128,6 +130,7 @@ const Editor = ({ defaultCredits, defaultMeme = undefined }: Props) => {
             e.preventDefault();
             const text = prompt.trim();
             if (text.length <= 3) return;
+            analytics?.track("Generate Video");
             generateVideo();
           }}
         >
@@ -173,6 +176,7 @@ const Editor = ({ defaultCredits, defaultMeme = undefined }: Props) => {
             onClick={(e) => {
               e.preventDefault();
               generateVideo();
+              analytics?.track("Retry generating Video");
             }}
           >
             Retry generating video
@@ -181,6 +185,7 @@ const Editor = ({ defaultCredits, defaultMeme = undefined }: Props) => {
             onClick={async (e) => {
               e.preventDefault();
               await generateGif();
+              await analytics?.track("Save meme");
               router.push(`/meme/${meme?.id}`);
             }}
           >
