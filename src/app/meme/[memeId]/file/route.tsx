@@ -1,10 +1,6 @@
 import { getMeme } from "@/server/data/meme";
 import { notFound } from "next/navigation";
 import { NextResponse } from "next/server";
-
-export const runtime = "edge";
-export const preferredRegion = "fra1";
-
 export async function GET(
   req: Request,
   {
