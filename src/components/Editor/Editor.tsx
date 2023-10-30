@@ -18,11 +18,14 @@ import { ActionWrapper, VideoPreview } from "./Elements";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useJune } from "@/lib/hooks/useJune";
+import { ArrowDownTrayIcon } from "@heroicons/react/24/solid";
+import { cn } from "@/lib/utils";
 
 enum State {
   EMPTY_VIDEO,
   GENERATE_VIDEO,
   EDIT_TEXT,
+  SAVING_MEME,
 }
 
 interface Props {
@@ -102,6 +105,7 @@ const Editor = ({ defaultCredits, defaultMeme = undefined }: Props) => {
 
   const generateGif = async () => {
     if (!meme || !meme.video?.id) return;
+    setState(State.SAVING_MEME);
     await loadFile(`/api/video/${meme.video.id}/file`);
     const gifFile = await transcode();
     const blob = new Blob([gifFile], {
@@ -159,12 +163,14 @@ const Editor = ({ defaultCredits, defaultMeme = undefined }: Props) => {
       actions = <></>;
       break;
     case State.EDIT_TEXT:
+    case State.SAVING_MEME:
       preview = (
         <>
           <VideoPreview src={meme?.video?.video?.signedUrl} />
           <TextEditor
             onTextChange={(text) => setTexts(text)}
             defaultText={meme?.videoText}
+            disabled={state == State.SAVING_MEME}
           />
         </>
       );
@@ -177,18 +183,27 @@ const Editor = ({ defaultCredits, defaultMeme = undefined }: Props) => {
               generateVideo();
               analytics?.track("Retry generating Video");
             }}
+            disabled={state == State.SAVING_MEME}
           >
             Retry generating video
           </Button>
           <Button
             onClick={async (e) => {
               e.preventDefault();
+              setState(State.SAVING_MEME);
               await generateGif();
               await analytics?.track("Save meme");
               router.push(`/meme/${meme?.id}`);
             }}
+            disabled={state == State.SAVING_MEME}
           >
-            Save Meme
+            <ArrowDownTrayIcon
+              className={cn([
+                state == State.SAVING_MEME ? "animate-bounce" : "",
+                "h-4",
+              ])}
+            />
+            &nbsp;{state == State.SAVING_MEME ? "Saving" : "Save"}
           </Button>
         </>
       );

@@ -7,9 +7,14 @@ import { useRef, useState } from "react";
 interface Props {
   onTextChange: (texts: VideoText[]) => void;
   defaultText?: VideoText[];
+  disabled?: boolean;
 }
 
-const TextEditor = ({ onTextChange, defaultText = undefined }: Props) => {
+const TextEditor = ({
+  onTextChange,
+  defaultText = undefined,
+  disabled = false,
+}: Props) => {
   const [texts, setTexts] = useState<VideoText[]>(
     defaultText || [
       { text: "", x: 0, y: 46 },
@@ -20,6 +25,7 @@ const TextEditor = ({ onTextChange, defaultText = undefined }: Props) => {
   return (
     <div className="relative w-full z-10 h-full grid grid-rows-3 grid-flow-col gap-4 items-center text-white md:text-3xl text-center">
       <MemeTextInput
+        disabled={disabled}
         defaultText={defaultText ? defaultText[0]?.text : ""}
         placeholder="Enter a top text..."
         onChange={(text) => {
@@ -32,6 +38,7 @@ const TextEditor = ({ onTextChange, defaultText = undefined }: Props) => {
       />
       <div></div>
       <MemeTextInput
+        disabled={disabled}
         defaultText={defaultText ? defaultText[1]?.text : ""}
         placeholder="Enter a bottom text..."
         onChange={(text) => {
