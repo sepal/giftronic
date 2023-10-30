@@ -48,8 +48,8 @@ export default async function Home({
       <main className="justify-between p-4 dark:bg-slate-800 dark:text-white">
         <h1 className="text-2xl py-4">Latest memes:</h1>
         <MemeGrid>
-          <Suspense fallback={skeletons}>{memeChilds}</Suspense>
           <MemeCTA />
+          <Suspense fallback={skeletons}>{memeChilds}</Suspense>
         </MemeGrid>
       </main>
     </>

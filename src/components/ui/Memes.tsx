@@ -51,7 +51,7 @@ const MemeCTA = () => (
   <Link
     href={"/generate"}
     className={cn(
-      `w-[${MAX_WIDTH}px]`,
+      ``,
       `h-[${MAX_HEIGHT}px]`,
       "bg-muted text-black flex justify-center items-center p-2 hover:shadow-lg rounded-md border-2"
     )}
