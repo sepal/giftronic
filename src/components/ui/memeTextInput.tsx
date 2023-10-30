@@ -17,12 +17,14 @@ interface Props {
   onChange: (text: string) => void;
   defaultText?: string;
   placeholder?: string;
+  disabled?: boolean;
 }
 
 const MemeTextInput = ({
   onChange,
   defaultText = "",
   placeholder = "",
+  disabled = false,
 }: Props) => {
   function setDefaultText() {
     const root = $getRoot();
@@ -37,7 +39,10 @@ const MemeTextInput = ({
     namespace: "MyEditor",
     onError: console.error,
     editorState: setDefaultText,
+    editable: !disabled,
   };
+
+  console.log(initialConfig);
 
   const handleChange = (editorState: EditorState) => {
     editorState.read(() => {

@@ -12,6 +12,7 @@ export default authMiddleware({
     "/generate",
     "/meme/(rec_[\\w\\d]+)",
     "/meme/(rec_[\\w\\d]+)/edit",
+    "/meme/(rec_[\\w\\d]+)/file",
     "/api/user/webhook",
     "/api/video/(rec_[\\w\\d]+)",
     "/api/video/(rec_[\\w\\d]+)/file",
