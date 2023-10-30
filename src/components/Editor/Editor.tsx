@@ -20,6 +20,7 @@ import { useRouter } from "next/navigation";
 import { useJune } from "@/lib/hooks/useJune";
 import { ArrowDownTrayIcon } from "@heroicons/react/24/solid";
 import { cn } from "@/lib/utils";
+import { usePostHog } from "posthog-js/react";
 
 enum State {
   EMPTY_VIDEO,
@@ -51,6 +52,7 @@ const Editor = ({ defaultCredits, defaultMeme = undefined }: Props) => {
   const [credits, setCredits] = useState<number | undefined>(defaultCredits);
   const router = useRouter();
   const analytics = useJune();
+  const posthog = usePostHog();
 
   const getCredits = async () => {
     const resp = await fetch("/api/user");
@@ -133,7 +135,8 @@ const Editor = ({ defaultCredits, defaultMeme = undefined }: Props) => {
             e.preventDefault();
             const text = prompt.trim();
             if (text.length <= 3) return;
-            analytics?.track("Generate Video");
+            analytics?.track("generate_video");
+            posthog.capture("generate_video");
             generateVideo();
           }}
         >
@@ -181,7 +184,8 @@ const Editor = ({ defaultCredits, defaultMeme = undefined }: Props) => {
             onClick={(e) => {
               e.preventDefault();
               generateVideo();
-              analytics?.track("Retry generating Video");
+              analytics?.track("retry_generating_video");
+              posthog.capture("retry_generating_video");
             }}
             disabled={state == State.SAVING_MEME}
           >
@@ -192,7 +196,8 @@ const Editor = ({ defaultCredits, defaultMeme = undefined }: Props) => {
               e.preventDefault();
               setState(State.SAVING_MEME);
               await generateGif();
-              await analytics?.track("Save meme");
+              await analytics?.track("save_meme");
+              await posthog.capture("save_meme");
               router.push(`/meme/${meme?.id}`);
             }}
             disabled={state == State.SAVING_MEME}
