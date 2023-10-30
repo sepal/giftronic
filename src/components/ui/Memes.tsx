@@ -7,6 +7,10 @@ import Link from "next/link";
 import { ActionWrapper } from "../Editor/Elements";
 import { auth } from "@clerk/nextjs";
 import { canEditMeme } from "@/server/data/user";
+import { Input } from "./input";
+import { ClipboardDocumentIcon } from "@heroicons/react/24/solid";
+import { CopyUrl } from "./copyUrl";
+import { getBaseUrl } from "@/lib/url";
 
 const MAX_WIDTH = 400;
 const MAX_HEIGHT = Math.round(MAX_WIDTH / 1.72);
@@ -71,9 +75,13 @@ interface MemeProps {
 const Meme = async ({ memeId, text, src }: MemeProps) => {
   const { userId } = auth();
   const canEdit = userId && (await canEditMeme(userId, memeId));
+
+  const handleCopyClick = () => {};
+
   return (
     <div className="flex flex-col gap-4">
       <Image src={src} width={"672"} height={"384"} alt={text} />
+      <CopyUrl url={`${getBaseUrl()}/meme/${memeId}/file`} />
       <ActionWrapper>
         <Link href={"/"} className={buttonVariants({ variant: "secondary" })}>
           Back to the front
