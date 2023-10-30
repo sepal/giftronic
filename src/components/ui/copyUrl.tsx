@@ -19,9 +19,7 @@ const CopyUrl = ({ url }: Props) => {
   const handleCopyClick = () => {
     if (!inputRef.current) return;
     navigator.clipboard.writeText(inputRef.current.value);
-
     setShowSuccess(true);
-
     setTimeout(() => setShowSuccess(false), 1000);
   };
   return (
