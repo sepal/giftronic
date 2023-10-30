@@ -2,13 +2,11 @@ import React, { ReactNode } from "react";
 import { Skeleton } from "./skeleton";
 import Image from "next/image";
 import { cn } from "@/lib/utils";
-import { Button, buttonVariants } from "./button";
+import { buttonVariants } from "./button";
 import Link from "next/link";
 import { ActionWrapper } from "../Editor/Elements";
 import { auth } from "@clerk/nextjs";
 import { canEditMeme } from "@/server/data/user";
-import { Input } from "./input";
-import { ClipboardDocumentIcon } from "@heroicons/react/24/solid";
 import { CopyUrl } from "./copyUrl";
 import { getBaseUrl } from "@/lib/url";
 
