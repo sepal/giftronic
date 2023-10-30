@@ -19,32 +19,28 @@ const TextEditor = ({ onTextChange, defaultText = undefined }: Props) => {
 
   return (
     <div className="relative w-full z-10 h-full grid grid-rows-3 grid-flow-col gap-4 items-center text-white text-3xl text-center">
-      <div className="bg-opacity-25 bg-black">
-        <MemeTextInput
-          defaultText={defaultText ? defaultText[0]?.text : ""}
-          placeholder="Top text"
-          onChange={(text) => {
-            const newTexts = [...texts];
-            newTexts[0].text = text;
+      <MemeTextInput
+        defaultText={defaultText ? defaultText[0]?.text : ""}
+        placeholder="Enter a top text..."
+        onChange={(text) => {
+          const newTexts = [...texts];
+          newTexts[0].text = text;
 
-            setTexts(newTexts);
-            onTextChange(newTexts);
-          }}
-        />
-      </div>
+          setTexts(newTexts);
+          onTextChange(newTexts);
+        }}
+      />
       <div></div>
-      <div className="bg-opacity-25 bg-black">
-        <MemeTextInput
-          defaultText={defaultText ? defaultText[1]?.text : ""}
-          placeholder="Bottom text"
-          onChange={(text) => {
-            const newTexts = [...texts];
-            newTexts[1].text = text;
-            setTexts(newTexts);
-            onTextChange(newTexts);
-          }}
-        />
-      </div>
+      <MemeTextInput
+        defaultText={defaultText ? defaultText[1]?.text : ""}
+        placeholder="Enter a bottom text..."
+        onChange={(text) => {
+          const newTexts = [...texts];
+          newTexts[1].text = text;
+          setTexts(newTexts);
+          onTextChange(newTexts);
+        }}
+      />
     </div>
   );
 };

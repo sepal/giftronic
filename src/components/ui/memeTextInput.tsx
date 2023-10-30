@@ -48,19 +48,21 @@ const MemeTextInput = ({
   };
 
   return (
-    <LexicalComposer initialConfig={initialConfig}>
-      <PlainTextPlugin
-        contentEditable={<ContentEditable value={"test"} />}
-        placeholder={
-          <span className="text-gray-100 text-center select-none pointer-events-none">
-            {placeholder}
-          </span>
-        }
-        ErrorBoundary={LexicalErrorBoundary}
-      />
-      <HistoryPlugin />
-      <OnChangePlugin onChange={handleChange} />
-    </LexicalComposer>
+    <div className="relative bg-opacity-25 bg-black">
+      <LexicalComposer initialConfig={initialConfig}>
+        <PlainTextPlugin
+          contentEditable={<ContentEditable value={"test"} className="" />}
+          placeholder={
+            <div className="absolute w-full top-0 pointer-events-none select-none text-gray-300">
+              {placeholder}
+            </div>
+          }
+          ErrorBoundary={LexicalErrorBoundary}
+        />
+        <HistoryPlugin />
+        <OnChangePlugin onChange={handleChange} />
+      </LexicalComposer>
+    </div>
   );
 };
 
