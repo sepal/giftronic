@@ -5,8 +5,13 @@ import { getXataClient } from "@/lib/xata";
 import { UserOutOfCreditsError, canGenerateVideo, deductCredits } from "./user";
 
 export enum Scheduler {
+  DDIMScheduler = "DDIMScheduler",
+  DPMSolverMultistepScheduler = "DPMSolverMultistepScheduler",
+  HeunDiscreteScheduler = "HeunDiscreteScheduler",
+  KarrasDPM = "KarrasDPM",
   EulerAncestralDiscreteScheduler = "EulerAncestralDiscreteScheduler",
   EulerDiscreteScheduler = "EulerDiscreteScheduler",
+  PNDMScheduler = "PNDMScheduler",
 }
 
 export interface VideoGenerationOptions {
@@ -15,6 +20,8 @@ export interface VideoGenerationOptions {
   steps?: number;
   mp4?: boolean;
   seed?: number;
+  width?: number;
+  height?: number;
 }
 
 const defaultOptions: VideoGenerationOptions = {
@@ -23,6 +30,8 @@ const defaultOptions: VideoGenerationOptions = {
   steps: 30,
   mp4: true,
   seed: 0,
+  width: 672,
+  height: 384,
 };
 
 export async function requestVideoGeneration(
@@ -48,7 +57,7 @@ export async function requestVideoGeneration(
   });
 
   const prediction = await replicate.predictions.create({
-    version: "b57dddff6ae2029be57eab3d17e0de5f1c83b822f0defd8ce49bee44d7b52ee6",
+    version: "78b3a6257e16e4b241245d65c8b2b81ea2e1ff7ed4c55306b511509ddbfd327a",
     input: {
       prompt: prompt,
       ...generationSettings,
@@ -56,6 +65,8 @@ export async function requestVideoGeneration(
     webhook: getBaseUrl() + `/api/video/${videoRecord.id}/generation`,
     webhook_events_filter: ["completed"],
   });
+
+  console.log("Requested generating video:", prediction);
 
   return videoRecord;
 }
