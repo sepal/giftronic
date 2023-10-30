@@ -2,42 +2,46 @@
 
 import { VideoText } from "@/lib/hooks/useFFMPEG";
 import { MemeTextInput } from "../ui/memeTextInput";
-import { useRef } from "react";
+import { useRef, useState } from "react";
 
 interface Props {
   onTextChange: (texts: VideoText[]) => void;
   defaultText?: VideoText[];
 }
 
-const TextEditor = ({ onTextChange, defaultText = [] }: Props) => {
-  const topText = useRef<string>("");
-  const bottomText = useRef<string>("");
-  const handleTextChange = () => {
-    const texts = [
-      { text: topText.current, x: 0, y: 46 },
-      { text: bottomText.current, x: 0, y: 312 },
-    ];
-    onTextChange(texts);
-  };
+const TextEditor = ({ onTextChange, defaultText = undefined }: Props) => {
+  const [texts, setTexts] = useState<VideoText[]>(
+    defaultText || [
+      { text: "", x: 0, y: 46 },
+      { text: "", x: 0, y: 312 },
+    ]
+  );
 
   return (
-    <div className="relative w-full z-10 h-full grid grid-rows-3 grid-flow-col gap-4 items-center ">
-      <div className="">
+    <div className="relative w-full z-10 h-full grid grid-rows-3 grid-flow-col gap-4 items-center text-white text-3xl text-center">
+      <div className="bg-opacity-25 bg-black">
         <MemeTextInput
-          defaultText={defaultText[0]?.text || "Top text"}
+          defaultText={defaultText ? defaultText[0]?.text : ""}
+          placeholder="Top text"
           onChange={(text) => {
-            topText.current = text;
-            handleTextChange();
+            const newTexts = [...texts];
+            newTexts[0].text = text;
+
+            setTexts(newTexts);
+            onTextChange(newTexts);
           }}
         />
       </div>
       <div></div>
-      <div>
+      <div className="bg-opacity-25 bg-black">
         <MemeTextInput
-          defaultText={defaultText[1]?.text || "Top text"}
+          defaultText={defaultText ? defaultText[1]?.text : ""}
+          placeholder="Bottom text"
           onChange={(text) => {
-            bottomText.current = text;
-            handleTextChange();
+            const newTexts = [...texts];
+            newTexts[1].text = text;
+            setTexts(newTexts);
+            onTextChange(newTexts);
           }}
         />
       </div>

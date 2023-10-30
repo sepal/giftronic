@@ -104,7 +104,6 @@ const Editor = ({ defaultCredits, defaultMeme = undefined }: Props) => {
     if (!meme || !meme.video?.id) return;
     await loadFile(`/api/video/${meme.video.id}/file`);
     const gifFile = await transcode();
-    const url = URL.createObjectURL(new Blob([gifFile], { type: "image/gif" }));
     const blob = new Blob([gifFile], {
       type: "image/gif",
     });

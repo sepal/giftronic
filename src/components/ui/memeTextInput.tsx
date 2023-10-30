@@ -1,6 +1,17 @@
 "use client";
-import { useState, KeyboardEvent, useRef, useEffect } from "react";
-import ContentEditable, { ContentEditableEvent } from "react-contenteditable";
+import {
+  $createParagraphNode,
+  $createTextNode,
+  $getRoot,
+  EditorState,
+} from "lexical";
+
+import { LexicalComposer } from "@lexical/react/LexicalComposer";
+import { PlainTextPlugin } from "@lexical/react/LexicalPlainTextPlugin";
+import { ContentEditable } from "@lexical/react/LexicalContentEditable";
+import { HistoryPlugin } from "@lexical/react/LexicalHistoryPlugin";
+import { OnChangePlugin } from "@lexical/react/LexicalOnChangePlugin";
+import LexicalErrorBoundary from "@lexical/react/LexicalErrorBoundary";
 
 interface Props {
   onChange: (text: string) => void;
@@ -8,31 +19,48 @@ interface Props {
   placeholder?: string;
 }
 
-const divStart = new RegExp(/<div>/gi);
-const divEnd = new RegExp(/<\/div>/gi);
-
 const MemeTextInput = ({
   onChange,
   defaultText = "",
   placeholder = "",
 }: Props) => {
-  const text = useRef(defaultText);
+  function setDefaultText() {
+    const root = $getRoot();
+    if (root.getFirstChild() === null) {
+      const paragraph = $createParagraphNode();
+      paragraph.append($createTextNode(defaultText));
+      root.append(paragraph);
+    }
+  }
 
-  const handleChange = (event: ContentEditableEvent) => {
-    text.current = event.target.value
-      .replace(/<br>/, "")
-      .replaceAll(divStart, "")
-      .replaceAll(divEnd, "\n");
-    onChange(text.current);
+  const initialConfig = {
+    namespace: "MyEditor",
+    onError: console.error,
+    editorState: setDefaultText,
+  };
+
+  const handleChange = (editorState: EditorState) => {
+    editorState.read(() => {
+      // Read the contents of the EditorState here.
+      const root = $getRoot();
+      onChange(root.getTextContent());
+    });
   };
 
   return (
-    <ContentEditable
-      html={text.current}
-      onChange={handleChange}
-      placeholder={placeholder}
-      className="bg-black bg-opacity-20 outline-none text-white text-center md:text-4xl"
-    />
+    <LexicalComposer initialConfig={initialConfig}>
+      <PlainTextPlugin
+        contentEditable={<ContentEditable value={"test"} />}
+        placeholder={
+          <span className="text-gray-100 text-center select-none pointer-events-none">
+            {placeholder}
+          </span>
+        }
+        ErrorBoundary={LexicalErrorBoundary}
+      />
+      <HistoryPlugin />
+      <OnChangePlugin onChange={handleChange} />
+    </LexicalComposer>
   );
 };
 
