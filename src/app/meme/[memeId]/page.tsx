@@ -1,6 +1,6 @@
 import { Header } from "@/components/layouts/Header";
 import { Meme } from "@/components/ui/Memes";
-import { getMeme } from "@/lib/clients";
+import { getMeme } from "@/server/data/meme";
 import { notFound } from "next/navigation";
 
 export default async function EditMeme({

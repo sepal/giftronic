@@ -2,11 +2,13 @@ import React, { ReactNode } from "react";
 import { Skeleton } from "./skeleton";
 import Image from "next/image";
 import { cn } from "@/lib/utils";
-import { Button, buttonVariants } from "./button";
+import { buttonVariants } from "./button";
 import Link from "next/link";
 import { ActionWrapper } from "../Editor/Elements";
 import { auth } from "@clerk/nextjs";
 import { canEditMeme } from "@/server/data/user";
+import { CopyUrl } from "./copyUrl";
+import { getBaseUrl } from "@/lib/url";
 
 const MAX_WIDTH = 400;
 const MAX_HEIGHT = Math.round(MAX_WIDTH / 1.72);
@@ -51,7 +53,7 @@ const MemeCTA = () => (
   <Link
     href={"/generate"}
     className={cn(
-      `w-[${MAX_WIDTH}px]`,
+      ``,
       `h-[${MAX_HEIGHT}px]`,
       "bg-muted text-black flex justify-center items-center p-2 hover:shadow-lg rounded-md border-2"
     )}
@@ -71,9 +73,13 @@ interface MemeProps {
 const Meme = async ({ memeId, text, src }: MemeProps) => {
   const { userId } = auth();
   const canEdit = userId && (await canEditMeme(userId, memeId));
+
+  const handleCopyClick = () => {};
+
   return (
     <div className="flex flex-col gap-4">
       <Image src={src} width={"672"} height={"384"} alt={text} />
+      <CopyUrl url={`${getBaseUrl()}/meme/${memeId}/file`} />
       <ActionWrapper>
         <Link href={"/"} className={buttonVariants({ variant: "secondary" })}>
           Back to the front
