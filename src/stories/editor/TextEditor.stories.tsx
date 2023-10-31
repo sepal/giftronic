@@ -14,5 +14,12 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
-  args: {},
+  render: (args) => (
+    <div className="w-[300px]">
+      <TextEditor {...args} />
+    </div>
+  ),
+  args: {
+    onTextChange: (texts) => console.log(texts),
+  },
 };
