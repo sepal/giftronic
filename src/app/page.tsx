@@ -19,7 +19,15 @@ export default async function Home({
 
   const xata = getXataClient();
   const memes = await xata.db.Memes.filter({
-    $exists: "file",
+    $all: [
+      { $exists: "file" },
+      { $exists: "text" },
+      {
+        $not: {
+          text: "",
+        },
+      },
+    ],
   })
     .sort("xata.updatedAt", "desc")
     .getPaginated({

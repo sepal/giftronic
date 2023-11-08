@@ -11,7 +11,7 @@ export default async function EditMeme({
   const { memeId } = params;
   const meme = await getMeme(memeId);
 
-  if (!meme?.file?.url) {
+  if (!meme?.file?.url || !meme?.text) {
     notFound();
   }
 
